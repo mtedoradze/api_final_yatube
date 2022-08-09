@@ -112,7 +112,7 @@ curl --location --request GET 'http://127.0.0.1:8000/api/v1/posts/1/groups' \
 6. Подписки пользователя, сделавшего запрос (доступно только авторизованным пользователям):
 ```
 curl --location --request GET 'http://127.0.0.1:8000/api/v1/follow/' \
---header 'Authorization: Bearer {your_api_yatube_token}' \
+--header 'Authorization: Bearer {your_access_token}' \
 --header 'Content-Type: application/json' \
 --data-raw ''
 ```
@@ -128,7 +128,7 @@ curl --location --request GET 'http://127.0.0.1:8000/api/v1/follow/' \
 7. Создание подписки на автора(доступно только авторизованным пользователям):
 ```
 curl --location --request POST 'http://127.0.0.1:8000/api/v1/follow/' \
---header 'Authorization: Bearer {your_api_yatube_token} \
+--header 'Authorization: Bearer {your_access_token} \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "following": "following_username"
@@ -144,10 +144,10 @@ curl --location --request POST 'http://127.0.0.1:8000/api/v1/follow/' \
 8. Создание публикации (доступно только авторизованным пользователям):
 ```
 curl —location —request POST ‘http://127.0.0.1:8000/api/v1/posts/‘ \
-—header ‘Authorization: Bearer {your_api_yatube_token}’ \
+—header ‘Authorization: Bearer {your_access_token}’ \
 —header ‘Content-Type: application/json’ \
 —data-raw ‘{
-    «text»: «your_text»
+    "text": "your_text"
 }’
 ```
 Формат ответа:
