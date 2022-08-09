@@ -18,20 +18,146 @@
 
 ## Примеры запросов:
 1. Получить JWT-токен:
-`POST http://127.0.0.1:8000/api/v1/jwt/create/`
-2. Обновить JWT-токен:
-`POST http://127.0.0.1:8000/api/v1/jwt/refresh/`
-3. Проверить JWT-токен:
-`POST http://127.0.0.1:8000/api/v1/jwt/verify/`
-4. Получение публикаций:
-`GET http://127.0.0.1:8000/api/v1/posts/`
-5. Получение одной публикации по id:
-`GET http://127.0.0.1:8000/api/v1/posts/{id}/`
-6. Получение комментариев:
-`GET http://127.0.0.1:8000/api/v1/posts/{post_id}/comments/`
-7. Список сообществ:
-`GET http://127.0.0.1:8000/api/v1/groups/`
-10. Подписки пользователя, сделавшего запрос (доступно только авторизованным пользователям):
-`GET http://127.0.0.1:8000/api/v1/follow/`
-11. Создание публикации (доступно только авторизованным пользователям):
-`POST http://127.0.0.1:8000/api/v1/posts/`
+```
+curl --location --request POST 'http://127.0.0.1:8000/api/v1/jwt/create/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+		"username": "your_username",
+		"password": "your_password"
+}'
+```
+Формат ответа:
+```
+{
+		"refresh": "string",
+		"access": "string"
+}
+```
+2. Получение публикаций:
+```
+curl --location --request GET 'http://127.0.0.1:8000/api/v1/posts/?limit=2&offset=4' \
+--header 'Content-Type: application/json' \
+--data-raw ''
+```
+Формат ответа:
+```
+{
+  "count": 123,
+  "next": "http://127.0.0.1:8000/api/v1/posts/?limit=2&offset=6",
+  "previous": "http://127.0.0.1:8000/api/v1/posts/?limit=2&offset=2",
+  "results": [
+    {
+      "id": 0,
+      "author": "string",
+      "text": "string",
+      "pub_date": "2021-10-14T20:41:29.648Z",
+      "image": "string",
+      "group": 0
+    }
+  ]
+}
+```
+3. Получение одной публикации по id:
+```
+curl --location --request GET 'http://127.0.0.1:8000/api/v1/posts/1 \
+--header 'Content-Type: application/json' \
+--data-raw ''
+```
+Формат ответа:
+```
+{
+		"id": 0,
+		"author": "string",
+		"text": "string",
+		"pub_date": "2019-08-24T14:15:22Z",
+		"image": "string",
+		"group": 0
+}
+```
+4. Получение комментариев:
+```
+curl --location --request GET 'http://127.0.0.1:8000/api/v1/posts/1/comments' \
+--header 'Content-Type: application/json' \
+--data-raw ''
+```
+Формат ответа:
+```
+[
+		{
+		"id": 0,
+		"author": "string",
+		"text": "string",
+		"created": "2019-08-24T14:15:22Z",
+		"post": 0
+		}
+]
+```
+5. Список сообществ:
+```
+curl --location --request GET 'http://127.0.0.1:8000/api/v1/posts/1/groups' \
+--header 'Content-Type: application/json' \
+--data-raw ''
+```
+Формат ответа:
+```
+[
+		{
+		"id": 0,
+		"title": "string",
+		"slug": "string",
+		"description": "string"
+		}
+]
+```
+6. Подписки пользователя, сделавшего запрос (доступно только авторизованным пользователям):
+```
+curl --location --request GET 'http://127.0.0.1:8000/api/v1/follow/' \
+--header 'Authorization: Bearer {your_api_yatube_token}' \
+--header 'Content-Type: application/json' \
+--data-raw ''
+```
+Формат ответа:
+```
+[
+		{
+		"user": "string",
+		"following": "string"
+		}
+]
+```
+7. Создание подписки на автора(доступно только авторизованным пользователям):
+```
+curl --location --request POST 'http://127.0.0.1:8000/api/v1/follow/' \
+--header 'Authorization: Bearer {your_api_yatube_token} \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "following": "following_username"
+}'
+```
+Формат ответа:
+```
+{
+  "user": "string",
+  "following": "string"
+}
+```
+8. Создание публикации (доступно только авторизованным пользователям):
+```
+curl —location —request POST ‘http://127.0.0.1:8000/api/v1/posts/‘ \
+—header ‘Authorization: Bearer {your_api_yatube_token}’ \
+—header ‘Content-Type: application/json’ \
+—data-raw ‘{
+    «text»: «your_text»
+}’
+```
+Формат ответа:
+```
+{
+		"id": 0,
+		"author": "string",
+		"text": "string",
+		"pub_date": "2019-08-24T14:15:22Z",
+		"image": "string",
+		"group": 0
+}
+```

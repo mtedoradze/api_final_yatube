@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from rest_framework import filters
+from rest_framework import generics
 from rest_framework import permissions
 from rest_framework import viewsets
 from rest_framework.pagination import LimitOffsetPagination
@@ -46,9 +47,10 @@ class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     """Операции с сообществами: только просмотр."""
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    permission_classes = (permissions.AllowAny,)
 
 
-class FollowViewSet(viewsets.ModelViewSet):
+class FollowListCreateView(generics.ListCreateAPIView):
     """
     Операции с подписками:
     просмотр списка своих подписок (с возможностью поиска по автору)
@@ -61,8 +63,8 @@ class FollowViewSet(viewsets.ModelViewSet):
     search_fields = ('following__username',)
 
     def get_queryset(self):
-        following = Follow.objects.filter(user=self.request.user)
-        return following
+        return Follow.objects.select_related(
+            'following').filter(user=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
